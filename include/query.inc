@@ -128,7 +128,6 @@ class QueryBuilder
          */
         public function getSelect()
         {
-                error_log($this->query);
                 return $this->query;
         }
 
