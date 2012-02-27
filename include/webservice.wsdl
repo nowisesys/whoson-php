@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://it.bmc.uu.se/whoson" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://it.bmc.uu.se/whoson" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://it.bmc.uu.se/whoson">
+      <s:element name="CreateLogonEvent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="computer" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="hwaddr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateLogonEventResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CreateLogonEventResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CloseLogonEvent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="eventID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CloseLogonEventResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="DeleteLogonEvent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="eventID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteLogonEventResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="FindLogonEvent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="computer" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindLogonEventResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="FindLogonEventResult" type="tns:LogonEvent" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="LogonEvent">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EventID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Domain" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HwAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IpAddress" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Hostname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Workstation" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="StartTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndTime" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="FindLogonEvents">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="filter" type="tns:LogonEvent" />
+            <s:element minOccurs="1" maxOccurs="1" name="match" type="tns:LogonEventMatch" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="LogonEventMatch">
+        <s:restriction base="s:string">
+          <s:enumeration value="Before" />
+          <s:enumeration value="Between" />
+          <s:enumeration value="After" />
+          <s:enumeration value="Exact" />
+          <s:enumeration value="Active" />
+          <s:enumeration value="Closed" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="FindLogonEventsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FindLogonEventsResult" type="tns:ArrayOfLogonEvent" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLogonEvent">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="LogonEvent" type="tns:LogonEvent" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="CreateLogonEventSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateLogonEvent" />
+  </wsdl:message>
+  <wsdl:message name="CreateLogonEventSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateLogonEventResponse" />
+  </wsdl:message>
+  <wsdl:message name="CloseLogonEventSoapIn">
+    <wsdl:part name="parameters" element="tns:CloseLogonEvent" />
+  </wsdl:message>
+  <wsdl:message name="CloseLogonEventSoapOut">
+    <wsdl:part name="parameters" element="tns:CloseLogonEventResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteLogonEventSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteLogonEvent" />
+  </wsdl:message>
+  <wsdl:message name="DeleteLogonEventSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteLogonEventResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindLogonEventSoapIn">
+    <wsdl:part name="parameters" element="tns:FindLogonEvent" />
+  </wsdl:message>
+  <wsdl:message name="FindLogonEventSoapOut">
+    <wsdl:part name="parameters" element="tns:FindLogonEventResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindLogonEventsSoapIn">
+    <wsdl:part name="parameters" element="tns:FindLogonEvents" />
+  </wsdl:message>
+  <wsdl:message name="FindLogonEventsSoapOut">
+    <wsdl:part name="parameters" element="tns:FindLogonEventsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="LogonAccountingServiceSoap">
+    <wsdl:operation name="CreateLogonEvent">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Creates and return the ID of an logon session. The computer argument is the NetBIOS name.</wsdl:documentation>
+      <wsdl:input message="tns:CreateLogonEventSoapIn" />
+      <wsdl:output message="tns:CreateLogonEventSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CloseLogonEvent">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Close an existing logon session identified by the event ID</wsdl:documentation>
+      <wsdl:input message="tns:CloseLogonEventSoapIn" />
+      <wsdl:output message="tns:CloseLogonEventSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteLogonEvent">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Deletes the logon event identified by the event ID.</wsdl:documentation>
+      <wsdl:input message="tns:DeleteLogonEventSoapIn" />
+      <wsdl:output message="tns:DeleteLogonEventSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FindLogonEvent">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Find and return the logon event matching the request parameters.</wsdl:documentation>
+      <wsdl:input message="tns:FindLogonEventSoapIn" />
+      <wsdl:output message="tns:FindLogonEventSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FindLogonEvents">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Find and return all logon events matching the filter and match options.</wsdl:documentation>
+      <wsdl:input message="tns:FindLogonEventsSoapIn" />
+      <wsdl:output message="tns:FindLogonEventsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="LogonAccountingServiceSoap" type="tns:LogonAccountingServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateLogonEvent">
+      <soap:operation soapAction="http://it.bmc.uu.se/whoson/CreateLogonEvent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CloseLogonEvent">
+      <soap:operation soapAction="http://it.bmc.uu.se/whoson/CloseLogonEvent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteLogonEvent">
+      <soap:operation soapAction="http://it.bmc.uu.se/whoson/DeleteLogonEvent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindLogonEvent">
+      <soap:operation soapAction="http://it.bmc.uu.se/whoson/FindLogonEvent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindLogonEvents">
+      <soap:operation soapAction="http://it.bmc.uu.se/whoson/FindLogonEvents" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="LogonAccountingServiceSoap12" type="tns:LogonAccountingServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateLogonEvent">
+      <soap12:operation soapAction="http://it.bmc.uu.se/whoson/CreateLogonEvent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CloseLogonEvent">
+      <soap12:operation soapAction="http://it.bmc.uu.se/whoson/CloseLogonEvent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteLogonEvent">
+      <soap12:operation soapAction="http://it.bmc.uu.se/whoson/DeleteLogonEvent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindLogonEvent">
+      <soap12:operation soapAction="http://it.bmc.uu.se/whoson/FindLogonEvent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindLogonEvents">
+      <soap12:operation soapAction="http://it.bmc.uu.se/whoson/FindLogonEvents" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LogonAccountingService">
+    <wsdl:port name="LogonAccountingServiceSoap" binding="tns:LogonAccountingServiceSoap">
+      <soap:address location="@location@" />
+    </wsdl:port>
+    <wsdl:port name="LogonAccountingServiceSoap12" binding="tns:LogonAccountingServiceSoap12">
+      <soap12:address location="@location@" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
