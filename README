@@ -1,0 +1,17 @@
+
+   README FOR WHOSON-PHP
+
+
+** GENERAL:
+
+   WhosOn (PHP) is the server side component of the WhosOn project, a solution
+   for centralized logon accounting. The whoson-php is functional equivalent to
+   whoson-asp, but intended to be runned on Linux/UNIX hosts (under i.e. Apache).
+
+** INFORMATION:
+
+   See INSTALL for requirements, database and install hints. The project page
+   is: http://it.bmc.uu.se/andlov/proj/whoson
+
+
+// Anders Lövgren, 2012-02-27

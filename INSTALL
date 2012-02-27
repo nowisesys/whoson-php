@@ -1,0 +1,70 @@
+
+   INSTALL INSTRUCTIONS FOR WHOSON-PHP
+
+
+** REQUIREMENTS:
+
+   Tested versions within []. Other versions is probably OK also as this is a
+   kind of standard/no funky application.
+
+   + Applications:
+
+     o) Apache Web Server       [2.2.21]
+     o) MySQL database          [5.1.56]
+     o) PHP                     [5.3.8]
+     o) Gentoo Linux 64-bit     [10.0]
+
+   The database is not restricted to MySQL, any database supported by REAR/MDB2
+   can be used (see http://pear.php.net/MDB2).
+
+   + PHP PECL/PEAR extensions:
+
+     o) SOAP extension          [Bundled with PHP]
+     o) dev-php/PEAR-MDB2       [2.5.0] (*)
+
+   (*) = Tested with MySQL MDB2 driver 1.5.0
+
+** DATABASE:
+
+   The database file (SQL script) is distributed in a separate package, see
+   http://it.bmc.uu.se/andlov/proj/whoson/sql/. The SQL package is only needed 
+   when setting up the database on the web server.
+
+** INSTALL:
+
+   Unpack the source code somewhere *outside* of your web root, otherwise the
+   configuration files (with password in plain text) might get exposed!
+
+     bash$> tar xfvz whoson-php-xyz.tar.gz
+
+   Create config protected version of the configuration files:
+
+     bash$> cd whoson-php/conf
+     bash$> cp apache.conf.in apache.conf
+     bash$> cp database.conf.in database.conf
+
+   Edit conf/database.conf, pay attention to the selected database driver (the
+   phptype value).
+
+   Edit conf/apache.conf, make sure to change the source directory path. Link
+   the configuration inside your web application setup, the exact details for
+   this step depends on distrubution/customization. Heres mine:
+
+     bash$> cd /etc/apache2/webapps.d/
+     bash$> ln -s /var/www/localhost/apps/whoson-php/conf/apache.conf whoson.conf
+
+   In my case, scripts under /etc/apache2/webapps.d/ gets included by the special
+   script /etc/apache2/modules.d/99_webapps.conf. Other possiblilities are that
+   these are included direct by /etc/apache2/httpd.conf.
+
+** TESTING:
+
+   Your can now test to access the web service from an client computer having
+   the package whoson-win (Windows client) or whoson-linux (Linux/Mac OS X)
+   installed.
+
+   A tips is to monitor the PHP error log (/var/log/apache2/php_error_log) and
+   see if some problem occurs.
+
+
+// Anders Lövgren, 2012-02-27

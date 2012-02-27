@@ -1,0 +1,29 @@
+# -*- sh -*-
+# Apache web server configuration for this web application.
+#
+# File:   conf/apache.conf
+# Author: Anders Lövgren
+# Date:   2012-02-27
+#
+# Note: Make sure to modify pathes, including the custom include path below.
+#
+
+Alias /whoson /var/www/localhost/apps/whoson-php/source
+
+# The application root directory. Restrict to those computers that register 
+# with the web service or queries data from it.
+<Directory /var/www/localhost/apps/whoson-php/source/>
+  Order deny,allow
+  Allow from all
+  Options Indexes FollowSymLinks MultiViews
+  
+  # Hide development files:
+  <FilesMatch "\.(inc|bak|svn|.*~)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+  
+  # Set custom include path:
+  php_value include_path ".:/var/www/localhost/apps/whoson-php:/usr/share/php"
+  
+</Directory>
