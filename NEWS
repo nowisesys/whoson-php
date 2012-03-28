@@ -1,3 +1,12 @@
-Version 1.0.0:
+Version 1.1.0 (2012-03-28):
+
+    * NULL timestamps are now mapped to UNIX epoch start (1970-01-01). This
+      fixes a compatibility issue with ASP.NET.
+
+    * Filters can now be used in conjunction with active and closes session
+      queries. Useful for matching all active logon sessions from a single
+      computer.
+
+Version 1.0.0 (2012-02-18):
 
     * This is the first release of whoson-php, so everything is news :-)
