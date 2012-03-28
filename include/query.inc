@@ -8,7 +8,7 @@
 // Date:   2012-02-27
 
 if (!defined("DATETIME_IS_NULL")) {
-        define("DATETIME_IS_NULL", '0000-00-00 00:00:00');
+        define("DATETIME_IS_NULL", '1970-01-01 00:00:00');
 }
 
 // 
@@ -45,7 +45,6 @@ class QueryBuilder
          * @var LogonEvent
          */
         private $filter;
-
         /**
          * @var string 
          */
@@ -85,7 +84,7 @@ class QueryBuilder
          */
         public function build()
         {
-                $this->where = array ();
+                $this->where = array();
                 $this->query = "SELECT * FROM logons";
 
                 switch ($this->match) {
@@ -272,7 +271,7 @@ class QueryResult
          */
         public function & fill(&$list)
         {
-               while ($this->read()) {
+                while ($this->read()) {
                         $list[] = $this->next();
                 }
                 return $list;
@@ -297,7 +296,7 @@ class QueryResult
          */
         public function next()
         {
-                if(!isset($this->data)) {
+                if (!isset($this->data)) {
                         return null;
                 }
 
