@@ -102,7 +102,7 @@ class WebService
                         trigger_error($dbo->getMessage(), E_USER_ERROR);
                 }
 
-                $sql = sprintf("UPDATE logons SET endtime = '%s' WHERE id = %d", $obj->time, $obj->eventID);
+                $sql = sprintf("UPDATE logons SET endtime = '%s' WHERE id = %d AND endtime IS NULL", $obj->time, $obj->eventID);
                 $res = $dbo->query($sql);
                 if (PEAR::isError($res)) {
                         trigger_error($res->getMessage(), E_USER_ERROR);
@@ -119,7 +119,7 @@ class WebService
          */
         public function findLogonEvents($obj)
         {
-                error_log("(" . __METHOD__ . ") " . print_r($obj, true));
+                // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
 
                 $res = array (); // Array of LogonEvent objects
                 
