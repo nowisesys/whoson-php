@@ -102,9 +102,11 @@ class QueryBuilder
                                 break;
                         case LOGON_EVENT_MATCH_ACTIVE:
                                 $this->filterActive();
+                                $this->filterExact();
                                 break;
                         case LOGON_EVENT_MATCH_CLOSED:
                                 $this->filterClosed();
+                                $this->filterExact();
                                 break;
                 }
 
