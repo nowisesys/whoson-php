@@ -66,6 +66,9 @@
           <s:element minOccurs="0" maxOccurs="1" name="Workstation" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="StartTime" type="s:dateTime" />
           <s:element minOccurs="1" maxOccurs="1" name="EndTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="FirstID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LastID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Limit" type="s:int" />
         </s:sequence>
       </s:complexType>
       <s:element name="FindLogonEvents">

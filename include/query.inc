@@ -159,6 +159,9 @@ class QueryBuilder
 
         private function filterBetween()
         {
+                if (self::enabled($this->filter->FirstID) && self::enabled($this->filter->LastID)) {
+                        $this->where[] = sprintf("id BETWEEN %d AND %d", $this->filter->FirstID, $this->filter->LastID);
+                }
                 if (self::enabled($this->filter->StartTime) && self::enabled($this->filter->EndTime)) {
                         $this->where[] = sprintf("starttime BETWEEN '%s' AND '%s'", $this->filter->StartTime, $this->filter->EndTime);
                 }

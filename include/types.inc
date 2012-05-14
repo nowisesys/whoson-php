@@ -162,7 +162,7 @@ class FindLogonEventResponse {
 }
 
 //
-// Synopsis: LogonEvent(int, string, string, string, string, string, string, dateTime, dateTime)
+// Synopsis: LogonEvent(int, string, string, string, string, string, string, dateTime, dateTime, int, int, int)
 //
 class LogonEvent {
     /**
@@ -211,6 +211,21 @@ class LogonEvent {
     var $EndTime;
 
     /**
+     * @var int
+     */
+    var $FirstID;
+
+    /**
+     * @var int
+     */
+    var $LastID;
+
+    /**
+     * @var int
+     */
+    var $Limit;
+
+    /**
      * @param int $EventID
      * @param string $Username
      * @param string $Domain
@@ -220,8 +235,11 @@ class LogonEvent {
      * @param string $Workstation
      * @param dateTime $StartTime
      * @param dateTime $EndTime
+     * @param int $FirstID Only used for query
+     * @param int $LastID Only used for query
+     * @param int $Limit Only used for query
      */
-    public function __construct($EventID, $Username, $Domain, $HwAddress, $IpAddress, $Hostname, $Workstation, $StartTime, $EndTime) {
+    public function __construct($EventID, $Username, $Domain, $HwAddress, $IpAddress, $Hostname, $Workstation, $StartTime, $EndTime, $FirstID = -1, $LastID = -1, $Limit = 0) {
         $this->EventID = $EventID;
         $this->Username = $Username;
         $this->Domain = $Domain;
@@ -231,6 +249,9 @@ class LogonEvent {
         $this->Workstation = $Workstation;
         $this->StartTime = $StartTime;
         $this->EndTime = $EndTime;
+        $this->FirstID = $FirstID;
+        $this->LastID = $LastID;
+        $this->Limit = $Limit;
     }
 }
 

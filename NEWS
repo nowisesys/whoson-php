@@ -1,3 +1,11 @@
+Version 1.2.0 (2012-05-14):
+
+    * Added support for filtering on an range of logon sessions (using the
+      FirstID and LastID members in class LogonEvent).
+      
+    * Added support for limiting the number of rows returned. Useful
+      for pagination in service consumers.
+      
 Version 1.1.0 (2012-03-28):
 
     * NULL timestamps are now mapped to UNIX epoch start (1970-01-01). This

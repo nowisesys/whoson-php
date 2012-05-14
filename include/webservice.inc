@@ -121,19 +121,20 @@ class WebService
         {
                 // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
 
-                $res = array (); // Array of LogonEvent objects
-                
+                $res = array(); // Array of LogonEvent objects
+
                 $dbo = MDB2::singleton($GLOBALS['dsn']);
                 if (PEAR::isError($dbo)) {
                         trigger_error($dbo->getMessage(), E_USER_ERROR);
                 }
                 $dbo->setFetchMode(MDB2_FETCHMODE_OBJECT);
-                
+                $dbo->setLimit($obj->filter->Limit);
+
                 $qbd = new QueryBuilder($obj->filter, $obj->match);
                 $qbd->build();
-                
+
                 $rec = $dbo->query($qbd->getSelect());
-                
+
                 $qrs = new QueryResult($rec);
                 $qrs->fill($res);
 
