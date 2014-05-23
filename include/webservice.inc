@@ -16,9 +16,17 @@ require_once ('MDB2.php');
 require_once ('conf/database.conf');
 require_once ('include/types.inc');
 require_once ('include/query.inc');
+require_once ('include/auth.inc');
 
 class WebService
 {
+
+        private $auth;
+
+        public function __construct($config)
+        {
+                $this->auth = new Authentication($config);
+        }
 
         // 
         // Virtual members ($this->name)
@@ -38,6 +46,10 @@ class WebService
                                 return sprintf("%s://%s:%d/%s", $this->proto, $this->addr, $this->port, $this->path);
                         case "file":            // WSDL filename
                                 return WEB_SERVICE_WSDL;
+                        case "user":
+                                return isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : "";
+                        case "pass":
+                                return isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : "";
                 }
         }
 
@@ -51,6 +63,18 @@ class WebService
                 $soap->handle();
         }
 
+        // 
+        // Check if access is granted to method using current credentials.
+        // 
+        private function authorize($method)
+        {
+                if (!$this->auth->authenticated($this->user, $this->pass, $method)) {
+                        header('WWW-Authenticate: Basic realm="WhosOn"');
+                        header('HTTP/1.0 401 Unauthorized');
+                        exit(1);
+                }
+        }
+
         /**
          * Web service API (callback method).
          * 
@@ -60,6 +84,8 @@ class WebService
         public function createLogonEvent($obj)
         {
                 // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
+
+                $this->authorize(__METHOD__);
 
                 $obj->addr = $_SERVER['REMOTE_ADDR'];
                 $obj->host = gethostbyaddr($obj->addr);
@@ -95,6 +121,8 @@ class WebService
         {
                 // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
 
+                $this->authorize(__METHOD__);
+                
                 $obj->time = strftime('%Y-%m-%d %H:%M:%S');
 
                 $dbo = MDB2::singleton($GLOBALS['dsn']);
@@ -121,6 +149,8 @@ class WebService
         {
                 // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
 
+                $this->authorize(__METHOD__);
+                
                 $res = array(); // Array of LogonEvent objects
 
                 $dbo = MDB2::singleton($GLOBALS['dsn']);
@@ -151,6 +181,8 @@ class WebService
         {
                 // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
 
+                $this->authorize(__METHOD__);
+                
                 $sql = sprintf("SELECT * FROM logons WHERE username = '%s' AND domain = '%s' AND workstation = '%s' AND endtime IS NULL", $obj->user, $obj->domain, $obj->computer);
 
                 $dbo = MDB2::singleton($GLOBALS['dsn']);

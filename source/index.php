@@ -14,13 +14,14 @@
 // service class handle the SOAP request.
 // 
 
+require_once ('conf/config.inc');
 require_once('include/webservice.inc');
 
 if (isset($_REQUEST['wsdl'])) {
-        $service = new WebService();
+        $service = new WebService($GLOBALS['auth']);
         $service->sendDescription();
 } else {
-        $service = new WebService();
+        $service = new WebService($GLOBALS['auth']);
         $service->handle();
 }
 ?>

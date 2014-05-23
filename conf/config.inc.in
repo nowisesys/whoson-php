@@ -1,0 +1,40 @@
+<?php
+
+// Copyright (C) 2014 Computing Department BMC, 
+// Uppsala Biomedical Centre, Uppsala University.
+// 
+// File:   conf/config.inc
+// Author: Anders Lövgren
+// Date:   2014-05-22
+
+// 
+// Configure authentication. Uncomment one of 'ldap' or 'simple'. If $auth 
+// is unset, then authentication is disabled.
+// 
+$auth = array(
+        // 
+        // Configure LDAP authentication. The authentication is performed by
+        // binding to the LDAP tree.
+        // 
+        "ldap"    => array(
+                "host" => "ldaps://ldap.example.com"
+        ),
+        // 
+        // Configure basic HTTP authentication.
+        //         
+        "simple"   => array(
+                "user" => "username",
+                "pass" => "secret"
+        ),
+        // 
+        // Web service methods that requires authentication:
+        // 
+        "methods" => array(
+                "WebService::createLogonEvent", 
+                "WebService::closeLogonEvent", 
+                "WebService::findLogonEvents", 
+                "WebService::findLogonEvent"
+        )
+);
+
+?>

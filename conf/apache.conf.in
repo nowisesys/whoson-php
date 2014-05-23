@@ -12,7 +12,7 @@ Alias /whoson /var/www/localhost/apps/whoson-php/source
 
 # The application root directory. Restrict to those computers that register 
 # with the web service or queries data from it.
-<Directory /var/www/localhost/apps/whoson-php/source/>
+<Directory /var/www/localhost/apps/whoson-php/source>
   Order deny,allow
   Allow from all
   Options Indexes FollowSymLinks MultiViews
