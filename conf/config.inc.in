@@ -1,17 +1,32 @@
 <?php
 
-// Copyright (C) 2014 Computing Department BMC, 
+// Copyright (C) 2012, 2014 Computing Department BMC, 
 // Uppsala Biomedical Centre, Uppsala University.
 // 
 // File:   conf/config.inc
 // Author: Anders Lövgren
 // Date:   2014-05-22
+// 
 
-// 
-// Configure authentication. Uncomment one of 'ldap' or 'simple'. If $auth 
-// is unset, then authentication is disabled.
-// 
-$auth = array(
+/**
+ * Define logging options and whether to propagate exception messages to client.
+ */
+$config['error'] = array(
+        // 
+        // Send exception messages:
+        // 
+        'send' => true,
+        // 
+        // Log exceptions:
+        // 
+        'log'  => true
+);
+
+/**
+ * Configure authentication. Uncomment one of 'ldap' or 'simple'. If $auth 
+ * is unset, then authentication is disabled.
+ */
+$config['auth'] = array(
         // 
         // Configure LDAP authentication. The authentication is performed by
         // binding to the LDAP tree.

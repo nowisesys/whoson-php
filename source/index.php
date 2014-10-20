@@ -1,6 +1,6 @@
 <?php
 
-// Copyright (C) 2012 Computing Department BMC, 
+// Copyright (C) 2012, 2014 Computing Department BMC, 
 // Uppsala Biomedical Centre, Uppsala University.
 // 
 // File:   source/index.php
@@ -15,13 +15,14 @@
 // 
 
 require_once ('conf/config.inc');
-require_once('include/webservice.inc');
+require_once ('conf/database.conf');
 
-if (isset($_REQUEST['wsdl'])) {
-        $service = new WebService($GLOBALS['auth']);
+require_once ('include/webservice.inc');
+
+if (filter_has_var(INPUT_GET, 'wsdl')) {
+        $service = new WebService($config);
         $service->sendDescription();
 } else {
-        $service = new WebService($GLOBALS['auth']);
+        $service = new WebService($config);
         $service->handle();
 }
-?>
