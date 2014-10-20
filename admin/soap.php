@@ -1,7 +1,7 @@
 <?php
 
 // -------------------------------------------------------------------------------
-//  Copyright (C) 2007-2012 Anders Lövgren
+//  Copyright (C) 2007-2012, 2014 Anders Lövgren
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -107,13 +107,13 @@ function generate_classes($opts, $wsdl)
 function usage($prog)
 {
         $wsdl = array (
-            "remote" => "http://localhost/batchelor/ws/schema/wsdl/?wsdl",
-            "local" => "../source/ws/schema/wsdl/batchelor.wsdl.cache"
+            "remote" => "http://localhost/whoson?wsdl",
+            "local" => "../include/webservice.wsdl.cache"
         );
 
         printf("%s - generates PHP classes from SOAP types\n", $prog);
         printf("\n");
-        printf("Usage: %s <wsdl-location-url>\n", $prog);
+        printf("Usage: %s [options...] <wsdl-location-url>\n", $prog);
         printf("Options:\n");
         printf("  --constr[=bool]:  Use __constructor declaration.\n");
         printf("  --access=str:     Visibility for constructor.\n");
