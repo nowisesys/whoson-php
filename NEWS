@@ -1,3 +1,9 @@
+Version 2.0.0 (2014-10-20):
+
+    * Changed database layer to PDO. Use 1.x-series for MDB2 support.
+
+    * Documenting the code with doc comments when missing.
+
 Version 1.2.1 (2014-05-22):
 
     * Added authentication and authorization for all web service methods.

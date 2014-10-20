@@ -1,6 +1,6 @@
 <?php
 
-// Copyright (C) 2012 Computing Department BMC, 
+// Copyright (C) 2012, 2014 Computing Department BMC, 
 // Uppsala Biomedical Centre, Uppsala University.
 // 
 // File:   include/webservice.inc
@@ -11,26 +11,55 @@ if (!defined("WEB_SERVICE_WSDL")) {
         define("WEB_SERVICE_WSDL", __DIR__ . "/webservice.wsdl");
 }
 
-require_once ('MDB2.php');
-
-require_once ('conf/database.conf');
 require_once ('include/types.inc');
 require_once ('include/query.inc');
 require_once ('include/auth.inc');
 
+/**
+ * The web service handler class.
+ * 
+ * @property-read string $proto The SOAP service protocol (HTTP or HTTPS).
+ * @property-read string $addr The SOAP service address.
+ * @property-read int $port The SOAP service port (e.g. 80 or 443).
+ * @property-read string $path The SOAP service path.
+ * @property-read string $wsdl The SOAP service description (WSDL) URL.
+ * @property-read string $file Server local location of WSDL document.
+ * @property-read string $user The username for authentication.
+ * @property-read string $pass The password for authentication.
+ */
 class WebService
 {
 
+        /**
+         * The authentication configuration.
+         * @var array 
+         */
         private $auth;
+        /**
+         * The database connection parameters.
+         * @var array 
+         */
+        private $data;
+        /**
+         * Error report options.
+         * @var array 
+         */
+        private $error = array(
+                'send' => false,
+                'log'  => true
+        );
 
+        /**
+         * Constructor.
+         * @param array $config Configuration options.
+         */
         public function __construct($config)
         {
-                $this->auth = new Authentication($config);
+                $this->auth = new Authentication($config['auth']);
+                $this->data = $config['db'];
+                $this->error = $config['error'];
         }
 
-        // 
-        // Virtual members ($this->name)
-        // 
         public function __get($name)
         {
                 switch ($name) {
@@ -53,25 +82,57 @@ class WebService
                 }
         }
 
-        // 
-        // Setup this object as a SOAP handler.
-        // 
+        /**
+         * Setup this object as a SOAP handler.
+         */
         public function handle()
         {
                 $soap = new SoapServer($this->file);         // Using WSDL mode
                 $soap->setObject($this);
-                $soap->handle();
+
+                try {
+                        $soap->handle();
+                } catch (\Exception $exception) {
+                        if ($this->error['log']) {
+                                error_log($exception);
+                        }
+                        if ($this->error['send']) {
+                                $soap->fault("Receiver", $exception->getMessage());
+                        }
+                }
         }
 
-        // 
-        // Check if access is granted to method using current credentials.
-        // 
+        /**
+         * Check authorization.
+         * 
+         * Check if access is granted to method using current credentials. If not
+         * authorized, simply call exit() to terminate script execution.
+         * 
+         * @param string $method The called SOAP method.
+         */
         private function authorize($method)
         {
                 if (!$this->auth->authenticated($this->user, $this->pass, $method)) {
                         header('WWW-Authenticate: Basic realm="WhosOn"');
                         header('HTTP/1.0 401 Unauthorized');
                         exit(1);
+                }
+        }
+
+        /**
+         * Get database connection.
+         * @return \PDO
+         */
+        private function getConnection()
+        {
+                if (isset($this->data['options'])) {
+                        $pdo = new PDO($this->data['dsn'], $this->data['username'], $this->data['password'], $this->data['options']);
+                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                        return $pdo;
+                } else {
+                        $pdo = new PDO($this->data['dsn'], $this->data['username'], $this->data['password']);
+                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                        return $pdo;
                 }
         }
 
@@ -83,32 +144,32 @@ class WebService
          */
         public function createLogonEvent($obj)
         {
-                // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
+//                error_log("(" . __METHOD__ . ") " . print_r($obj, true));
 
                 $this->authorize(__METHOD__);
 
-                $obj->addr = $_SERVER['REMOTE_ADDR'];
+                $obj->addr = filter_input(INPUT_SERVER, 'REMOTE_ADDR');
                 $obj->host = gethostbyaddr($obj->addr);
                 $obj->time = strftime('%Y-%m-%d %H:%M:%S');
 
-                $sql = sprintf("INSERT INTO logons(username, domain, workstation, hwaddress, hostname, ipaddress, starttime) VALUES('%s','%s','%s','%s','%s','%s','%s')", $obj->user, $obj->domain, $obj->computer, $obj->hwaddr, $obj->host, $obj->addr, $obj->time);
+                $sql = "INSERT INTO logons(username, domain, workstation, hwaddress, hostname, ipaddress, starttime)"
+                    . " VALUES(:username,:domain,:workstation,:hwaddress,:hostname,:ipaddress,:starttime)";
 
-                $dbo = MDB2::singleton($GLOBALS['dsn']);
-                if (PEAR::isError($dbo)) {
-                        trigger_error($dbo->getMessage(), E_USER_ERROR);
-                }
+                $dbh = $this->getConnection();
+                $sth = $dbh->prepare($sql);
 
-                $res = $dbo->query($sql);
-                if (PEAR::isError($res)) {
-                        trigger_error($res->getMessage(), E_USER_ERROR);
-                }
+                $sth->execute(array(
+                        ':username'    => $obj->user,
+                        ':domain'      => $obj->domain,
+                        ':workstation' => $obj->computer,
+                        ':hwaddress'   => $obj->hwaddr,
+                        ':hostname'    => $obj->host,
+                        ':ipaddress'   => $obj->addr,
+                        ':starttime'   => $obj->time
+                    )
+                );
 
-                $eid = $dbo->lastInsertId();
-                if (PEAR::isError($eid)) {
-                        trigger_error($eid->getMessage(), E_USER_ERROR);
-                }
-
-                return new CreateLogonEventResponse($eid);
+                return new CreateLogonEventResponse($dbh->lastInsertId());
         }
 
         /**
@@ -119,22 +180,21 @@ class WebService
          */
         public function closeLogonEvent($obj)
         {
-                // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
+//                error_log("(" . __METHOD__ . ") " . print_r($obj, true));
 
                 $this->authorize(__METHOD__);
-                
+
                 $obj->time = strftime('%Y-%m-%d %H:%M:%S');
 
-                $dbo = MDB2::singleton($GLOBALS['dsn']);
-                if (PEAR::isError($dbo)) {
-                        trigger_error($dbo->getMessage(), E_USER_ERROR);
-                }
+                $sql = sprintf("UPDATE logons SET endtime = :endtime WHERE id = :id AND endtime IS NULL");
 
-                $sql = sprintf("UPDATE logons SET endtime = '%s' WHERE id = %d AND endtime IS NULL", $obj->time, $obj->eventID);
-                $res = $dbo->query($sql);
-                if (PEAR::isError($res)) {
-                        trigger_error($res->getMessage(), E_USER_ERROR);
-                }
+                $dbh = $this->getConnection();
+                $sth = $dbh->prepare($sql);
+
+                $sth->bindParam(':endtime', $obj->time, PDO::PARAM_STR);
+                $sth->bindParam(':id', $obj->eventID, PDO::PARAM_INT);
+
+                $sth->execute();
 
                 return new CloseLogonEventResponse();
         }
@@ -147,23 +207,17 @@ class WebService
          */
         public function findLogonEvents($obj)
         {
-                // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
+//                error_log("(" . __METHOD__ . ") " . print_r($obj, true));
 
                 $this->authorize(__METHOD__);
-                
-                $res = array(); // Array of LogonEvent objects
 
-                $dbo = MDB2::singleton($GLOBALS['dsn']);
-                if (PEAR::isError($dbo)) {
-                        trigger_error($dbo->getMessage(), E_USER_ERROR);
-                }
-                $dbo->setFetchMode(MDB2_FETCHMODE_OBJECT);
-                $dbo->setLimit($obj->filter->Limit);
+                $res = array(); // Array of LogonEvent objects
 
                 $qbd = new QueryBuilder($obj->filter, $obj->match);
                 $qbd->build();
 
-                $rec = $dbo->query($qbd->getSelect());
+                $dbh = $this->getConnection();
+                $rec = $dbh->query($qbd->getSelect());
 
                 $qrs = new QueryResult($rec);
                 $qrs->fill($res);
@@ -179,32 +233,30 @@ class WebService
          */
         public function findLogonEvent($obj)
         {
-                // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
+//                error_log("(" . __METHOD__ . ") " . print_r($obj, true));
 
                 $this->authorize(__METHOD__);
+
+                $sql = "SELECT * FROM logons WHERE username = :username AND domain = :domain AND workstation = :workstation AND endtime IS NULL";
+
+                $dbh = $this->getConnection();
+                $sth = $dbh->prepare($sql);
+
+                $sth->execute(array(
+                        ':username'    => $obj->user,
+                        ':domain'      => $obj->domain,
+                        ':workstation' => $obj->computer
+                ));
+
+                $res = new QueryResult($sth);
+                $res->read();
                 
-                $sql = sprintf("SELECT * FROM logons WHERE username = '%s' AND domain = '%s' AND workstation = '%s' AND endtime IS NULL", $obj->user, $obj->domain, $obj->computer);
-
-                $dbo = MDB2::singleton($GLOBALS['dsn']);
-                if (PEAR::isError($dbo)) {
-                        trigger_error($dbo->getMessage(), E_USER_ERROR);
-                }
-                $dbo->setFetchMode(MDB2_FETCHMODE_OBJECT);
-
-                $res = $dbo->query($sql);
-                if (PEAR::isError($res)) {
-                        trigger_error($res->getMessage(), E_USER_ERROR);
-                }
-
-                $qry = new QueryResult($res);
-                $rec = $qry->next();
-
-                return new FindLogonEventResponse($rec);
+                return new FindLogonEventResponse($res->next());
         }
 
-        // 
-        // Send service description (WSDL).
-        // 
+        /**
+         * Send service description (WSDL).
+         */
         public function sendDescription()
         {
                 echo str_replace("@location@", $this->wsdl, file_get_contents($this->file));

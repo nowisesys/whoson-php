@@ -9,20 +9,20 @@
 
    + Applications:
 
-     o) Apache Web Server       [2.2.21]
-     o) MySQL database          [5.1.56]
-     o) PHP                     [5.3.8]
-     o) Gentoo Linux 64-bit     [10.0]
+     o) Apache Web Server       [2.2.27]
+     o) MySQL database          [5.5.40]
+     o) PHP                     [5.4.32]
+     o) Gentoo Linux 64-bit     [13.0]      (from /etc/make.profile)
 
-   The database is not restricted to MySQL, any database supported by REAR/MDB2
-   can be used (see http://pear.php.net/MDB2).
+   The database is not restricted to MySQL, any database supported by PDO
+   can be used (see http://www.php.net/manual/en/pdo.drivers.php).
 
-   + PHP PECL/PEAR extensions:
+   + PHP PECL extensions:
 
      o) SOAP extension          [Bundled with PHP]
-     o) dev-php/PEAR-MDB2       [2.5.0] (*)
+     o) PDO extension           [Bundled with PHP]
 
-   (*) = Tested with MySQL MDB2 driver 1.5.0
+   Use whoson-php < 2.x if you like to use MDB2 (from PEAR) as database layer.
 
 ** DATABASE:
 
@@ -56,6 +56,12 @@
    In my case, scripts under /etc/apache2/webapps.d/ gets included by the special
    script /etc/apache2/modules.d/99_webapps.conf. Other possiblilities are that
    these are included direct by /etc/apache2/httpd.conf.
+
+** AUTHENTICATION:
+
+   Authentication is supported using HTTP basic. The credentials validation is
+   either configured to as local (simple) or LDAP bind (ldap) by uncomment prefered
+   method in conf/config.inc.
 
 ** TESTING:
 

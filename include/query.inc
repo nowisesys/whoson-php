@@ -1,6 +1,6 @@
 <?php
 
-// Copyright (C) 2012 Computing Department BMC, 
+// Copyright (C) 2012, 2014 Computing Department BMC, 
 // Uppsala Biomedical Centre, Uppsala University.
 // 
 // File:   include/query.inc
@@ -120,6 +120,11 @@ class QueryBuilder
                         }
                 }
                 $this->query .= " ORDER BY id";
+
+                if ($this->filter->Limit > 0) {
+                        $this->query .= sprintf(" LIMIT %d", $this->filter->Limit);
+                }
+
                 return $this->query;
         }
 
@@ -255,17 +260,32 @@ class QueryBuilder
 class QueryResult
 {
 
+        /**
+         * @var PDOStatement 
+         */
         private $res;
+        /**
+         * @var array 
+         */
         private $data;
 
+        /**
+         * Constructor.
+         * @param PDOStatement $res The query result statement.
+         */
         public function __construct(&$res)
         {
                 $this->res = $res;
         }
 
+        /**
+         * Destructor.
+         */
         public function __destruct()
         {
-                $this->res->free();
+                if (method_exists($this->res, 'closeCursor')) {
+                        $this->res->closeCursor();
+                }
         }
 
         /**
@@ -289,7 +309,7 @@ class QueryResult
          */
         public function read()
         {
-                $this->data = $this->res->fetchRow();
+                $this->data = $this->res->fetch(PDO::FETCH_OBJ);
                 return $this->data != null;
         }
 
@@ -301,8 +321,8 @@ class QueryResult
          */
         public function next()
         {
-                if (!isset($this->data)) {
-                        return null;
+                if (!isset($this->data) || $this->data == false) {
+                        $this->data = new stdClass();
                 }
 
                 if (!isset($this->data->id)) {
@@ -334,15 +354,7 @@ class QueryResult
                 }
 
                 return new LogonEvent(
-                        $this->data->id,
-                        $this->data->username,
-                        $this->data->domain,
-                        $this->data->hwaddress,
-                        $this->data->ipaddress,
-                        $this->data->hostname,
-                        $this->data->workstation,
-                        strtotime($this->data->starttime),
-                        strtotime($this->data->endtime));
+                    $this->data->id, $this->data->username, $this->data->domain, $this->data->hwaddress, $this->data->ipaddress, $this->data->hostname, $this->data->workstation, strtotime($this->data->starttime), strtotime($this->data->endtime));
         }
 
 }
