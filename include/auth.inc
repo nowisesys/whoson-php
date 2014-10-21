@@ -57,7 +57,7 @@ class Authentication
          */
         public function authenticated($user, $pass, $method)
         {
-//                error_log(sprintf("user: %s, pass: %s, method: %s", $user, $pass, $method));
+                // error_log(__METHOD__ . ': ' . sprintf("user: %s, pass: %s, method: %s", $user, $pass, $method));
 
                 if (!in_array($method, $this->config['methods'])) {
                         error_log(print_r($this->config, true));

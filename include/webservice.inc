@@ -94,6 +94,11 @@ class WebService
                 $soap->setObject($this);
 
                 try {
+		        // foreach(getallheaders() as $name => $value) {
+			//         error_log(__METHOD__ . ': ' . $name . ' -> ' . $value);
+			// }
+		        // error_log(__METHOD__ . ": " . file_get_contents("php://input"));
+		        
                         $soap->handle();
                 } catch (\Exception $exception) {
                         if ($this->error['log']) {
@@ -147,7 +152,7 @@ class WebService
          */
         public function createLogonEvent($obj)
         {
-//                error_log("(" . __METHOD__ . ") " . print_r($obj, true));
+                // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
 
                 $this->authorize(__METHOD__);
 
@@ -183,7 +188,7 @@ class WebService
          */
         public function closeLogonEvent($obj)
         {
-//                error_log("(" . __METHOD__ . ") " . print_r($obj, true));
+                // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
 
                 $this->authorize(__METHOD__);
 
@@ -210,7 +215,7 @@ class WebService
          */
         public function findLogonEvents($obj)
         {
-//                error_log("(" . __METHOD__ . ") " . print_r($obj, true));
+                // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
 
                 $this->authorize(__METHOD__);
 
@@ -236,7 +241,7 @@ class WebService
          */
         public function findLogonEvent($obj)
         {
-//                error_log("(" . __METHOD__ . ") " . print_r($obj, true));
+                // error_log("(" . __METHOD__ . ") " . print_r($obj, true));
 
                 $this->authorize(__METHOD__);
 
