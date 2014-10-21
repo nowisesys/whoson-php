@@ -262,6 +262,7 @@ class WebService
          */
         public function sendDescription()
         {
+	        header("Content-type: application/wsdl+xml");
                 echo str_replace("@location@", $this->wsdl, file_get_contents($this->file));
         }
 
