@@ -20,6 +20,7 @@ require_once ('include/auth.inc');
  * 
  * @property-read string $proto The SOAP service protocol (HTTP or HTTPS).
  * @property-read string $addr The SOAP service address.
+ * @property-read string $host The SOAP service hostname.
  * @property-read int $port The SOAP service port (e.g. 80 or 443).
  * @property-read string $path The SOAP service path.
  * @property-read string $wsdl The SOAP service description (WSDL) URL.
@@ -67,12 +68,14 @@ class WebService
                                 return (isset($_SERVER['HTTPS']) ? "https" : "http");
                         case "addr":
                                 return $_SERVER['SERVER_ADDR'];
+                        case "host":
+                                return $_SERVER['SERVER_NAME'];
                         case "port":
                                 return $_SERVER['SERVER_PORT'];
                         case "path":            // Script path
                                 return $_SERVER['SCRIPT_NAME'];
                         case "wsdl":            // WSDL URL
-                                return sprintf("%s://%s:%d/%s", $this->proto, $this->addr, $this->port, $this->path);
+                                return sprintf("%s://%s:%d/%s", $this->proto, $this->host, $this->port, $this->path);
                         case "file":            // WSDL filename
                                 return WEB_SERVICE_WSDL;
                         case "user":
