@@ -1,3 +1,10 @@
+Version 2.0.1 (2014-10-21):
+
+    * Fixed content-type for WSDL. Otherwise unrecognised by VS 2008.
+    
+    * Use hostname in service endpoint instead of IP-address. Important 
+      when accessed using HTTPS.
+    
 Version 2.0.0 (2014-10-20):
 
     * Changed database layer to PDO. Use 1.x-series for MDB2 support.
