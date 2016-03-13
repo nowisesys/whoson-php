@@ -13,14 +13,12 @@ Alias /whoson /var/www/localhost/apps/whoson-php/source
 # The application root directory. Restrict to those computers that register 
 # with the web service or queries data from it.
 <Directory /var/www/localhost/apps/whoson-php/source>
-  Order deny,allow
-  Allow from all
+  Require all granted
   Options Indexes FollowSymLinks MultiViews
   
   # Hide development files:
   <FilesMatch "\.(inc|bak|svn|.*~)$">
-    Order allow,deny
-    Deny from all
+    Require all denied
   </FilesMatch>
   
   # Set custom include path:
