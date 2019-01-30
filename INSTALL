@@ -27,7 +27,7 @@
 ** DATABASE:
 
    The database file (SQL script) is distributed in a separate package, see
-   http://it.bmc.uu.se/andlov/proj/whoson/sql/. The SQL package is only needed 
+   https://github.com/nowisesys/whoson-sql. The SQL package is only needed 
    when setting up the database on the web server.
 
 ** INSTALL:
