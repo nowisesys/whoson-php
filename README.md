@@ -34,4 +34,4 @@ hosts (under i.e. Apache with SOAP extension).
 * [Web Service (ASP.NET)](https://github.com/nowisesys/whoson-asp)
 * [SQL Database (MySQL/MSSQL)](https://github.com/nowisesys/whoson-sql)
 * [Client (Linux/Mac OS X)](https://github.com/nowisesys/whoson-linux)
-* [Client (Windows)](https://github.com/nowisesys/whoson-windows)
+* [Client (Windows)](https://github.com/nowisesys/whoson-win)
