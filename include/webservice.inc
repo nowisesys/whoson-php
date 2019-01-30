@@ -1,7 +1,8 @@
 <?php
 
-// Copyright (C) 2012, 2014 Computing Department BMC, 
-// Uppsala Biomedical Centre, Uppsala University.
+// 
+// Copyright (C) 2012-2018 Anders Lövgren, BMC-IT, Uppsala University.
+// Copyright (C) 2018-2019 Anders Lövgren, Nowise Systems.
 // 
 // File:   include/webservice.inc
 // Author: Anders Lövgren
@@ -94,11 +95,11 @@ class WebService
                 $soap->setObject($this);
 
                 try {
-		        // foreach(getallheaders() as $name => $value) {
-			//         error_log(__METHOD__ . ': ' . $name . ' -> ' . $value);
-			// }
-		        // error_log(__METHOD__ . ": " . file_get_contents("php://input"));
-		        
+                        // foreach(getallheaders() as $name => $value) {
+                        //         error_log(__METHOD__ . ': ' . $name . ' -> ' . $value);
+                        // }
+                        // error_log(__METHOD__ . ": " . file_get_contents("php://input"));
+
                         $soap->handle();
                 } catch (\Exception $exception) {
                         if ($this->error['log']) {
@@ -258,7 +259,7 @@ class WebService
 
                 $res = new QueryResult($sth);
                 $res->read();
-                
+
                 return new FindLogonEventResponse($res->next());
         }
 
@@ -267,7 +268,7 @@ class WebService
          */
         public function sendDescription()
         {
-	        header("Content-type: application/wsdl+xml");
+                header("Content-type: application/wsdl+xml");
                 echo str_replace("@location@", $this->wsdl, file_get_contents($this->file));
         }
 

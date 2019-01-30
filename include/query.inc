@@ -1,7 +1,8 @@
 <?php
 
-// Copyright (C) 2012, 2014 Computing Department BMC, 
-// Uppsala Biomedical Centre, Uppsala University.
+// 
+// Copyright (C) 2012-2018 Anders Lövgren, BMC-IT, Uppsala University.
+// Copyright (C) 2018-2019 Anders Lövgren, Nowise Systems.
 // 
 // File:   include/query.inc
 // Author: Anders Lövgren
@@ -36,7 +37,7 @@ if (!defined('LOGON_EVENT_MATCH_CLOSED')) {
 /**
  * Class supporting query building from filter and match options.
  *
- * @author Anders Lövgren (QNET/BMC CompDept)
+ * @author Anders Lövgren (Nowise Systems/BMC-IT, Uppsala University)
  */
 class QueryBuilder
 {
@@ -255,7 +256,7 @@ class QueryBuilder
  * The obvious reason to have two different ways of fetching data is to support
  * filtering using predicates callback objects and SPL.
  * 
- * @author Anders Lövgren (QNET/BMC CompDept)
+ * @author Anders Lövgren (Nowise Systems/BMC-IT, Uppsala University)
  */
 class QueryResult
 {

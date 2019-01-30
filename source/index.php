@@ -1,7 +1,8 @@
 <?php
 
-// Copyright (C) 2012, 2014 Computing Department BMC, 
-// Uppsala Biomedical Centre, Uppsala University.
+// 
+// Copyright (C) 2012-2018 Anders Lövgren, BMC-IT, Uppsala University.
+// Copyright (C) 2018-2019 Anders Lövgren, Nowise Systems.
 // 
 // File:   source/index.php
 // Author: Anders Lövgren
