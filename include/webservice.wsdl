@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://it.bmc.uu.se/whoson" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://it.bmc.uu.se/whoson" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://nowise.se/schemas/whoson" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://nowise.se/schemas/whoson" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
-    <s:schema elementFormDefault="qualified" targetNamespace="http://it.bmc.uu.se/whoson">
+    <s:schema elementFormDefault="qualified" targetNamespace="http://nowise.se/schemas/whoson">
       <s:element name="CreateLogonEvent">
         <s:complexType>
           <s:sequence>
@@ -163,7 +163,7 @@
   <wsdl:binding name="LogonAccountingServiceSoap" type="tns:LogonAccountingServiceSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="CreateLogonEvent">
-      <soap:operation soapAction="http://it.bmc.uu.se/whoson/CreateLogonEvent" style="document" />
+      <soap:operation soapAction="http://nowise.se/schemas/whoson/CreateLogonEvent" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -172,7 +172,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="CloseLogonEvent">
-      <soap:operation soapAction="http://it.bmc.uu.se/whoson/CloseLogonEvent" style="document" />
+      <soap:operation soapAction="http://nowise.se/schemas/whoson/CloseLogonEvent" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -181,7 +181,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="DeleteLogonEvent">
-      <soap:operation soapAction="http://it.bmc.uu.se/whoson/DeleteLogonEvent" style="document" />
+      <soap:operation soapAction="http://nowise.se/schemas/whoson/DeleteLogonEvent" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -190,7 +190,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="FindLogonEvent">
-      <soap:operation soapAction="http://it.bmc.uu.se/whoson/FindLogonEvent" style="document" />
+      <soap:operation soapAction="http://nowise.se/schemas/whoson/FindLogonEvent" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -199,7 +199,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="FindLogonEvents">
-      <soap:operation soapAction="http://it.bmc.uu.se/whoson/FindLogonEvents" style="document" />
+      <soap:operation soapAction="http://nowise.se/schemas/whoson/FindLogonEvents" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -211,7 +211,7 @@
   <wsdl:binding name="LogonAccountingServiceSoap12" type="tns:LogonAccountingServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="CreateLogonEvent">
-      <soap12:operation soapAction="http://it.bmc.uu.se/whoson/CreateLogonEvent" style="document" />
+      <soap12:operation soapAction="http://nowise.se/schemas/whoson/CreateLogonEvent" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -220,7 +220,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="CloseLogonEvent">
-      <soap12:operation soapAction="http://it.bmc.uu.se/whoson/CloseLogonEvent" style="document" />
+      <soap12:operation soapAction="http://nowise.se/schemas/whoson/CloseLogonEvent" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -229,7 +229,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="DeleteLogonEvent">
-      <soap12:operation soapAction="http://it.bmc.uu.se/whoson/DeleteLogonEvent" style="document" />
+      <soap12:operation soapAction="http://nowise.se/schemas/whoson/DeleteLogonEvent" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -238,7 +238,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="FindLogonEvent">
-      <soap12:operation soapAction="http://it.bmc.uu.se/whoson/FindLogonEvent" style="document" />
+      <soap12:operation soapAction="http://nowise.se/schemas/whoson/FindLogonEvent" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -247,7 +247,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="FindLogonEvents">
-      <soap12:operation soapAction="http://it.bmc.uu.se/whoson/FindLogonEvents" style="document" />
+      <soap12:operation soapAction="http://nowise.se/schemas/whoson/FindLogonEvents" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
