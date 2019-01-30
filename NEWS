@@ -1,3 +1,7 @@
+Version 2.0.2 (2019-01-30):
+
+    * Migrated project to GIT (QNET -> Nowise Systems).
+
 Version 2.0.1 (2014-10-21):
 
     * Fixed content-type for WSDL. Otherwise unrecognised by VS 2008.
