@@ -26,7 +26,7 @@ enable HTTP basic authentication against i.e. LDAP or plain text file.
 
 Provides a server-side component of the WhosOn application. The whoson-php is 
 functional equivalent to whoson-asp, but intended to be runned on Linux/UNIX 
-hosts (under i.e. Apache).
+hosts (under i.e. Apache with SOAP extension).
 
 ### See also:
 
